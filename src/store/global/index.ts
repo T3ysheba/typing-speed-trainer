@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 import { textGen } from './actions'
+import type { TGlobalState } from './types'
 
-export const initialState: any = {
+export const initialState: TGlobalState = {
   data: null,
   error: null,
   loading: false,
