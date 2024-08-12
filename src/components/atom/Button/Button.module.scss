@@ -1,0 +1,37 @@
+@import 'styles/vars';
+@import 'styles/mixins';
+@import 'styles/colors';
+@import 'styles/typography';
+
+.wrapper {
+  @extend %flex-center;
+  @extend %body-16;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 24px;
+  border-radius: 8px;
+  transition: 0.6s all;
+  text-align: center;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:disabled,
+  &:disabled:hover {
+    opacity: 1;
+    background-color: $tertiary;
+  }
+}
+
+.primary {
+  color: $white;
+  background-color: $primary;
+  @include svgFill($white, 20px);
+}
+
+.secondary {
+  color: $white;
+  background-color: $darkgray;
+  @include svgFill($white, 20px);
+}

@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "type": "with_punctuations",
+      "content": "Life is beautiful, isn't it? We all have moments of joy, sadness, and everything in between. Every day brings new opportunities—some we take, some we miss. The sun rises, the sun sets; time marches on. We laugh, we cry; we love, we lose. Yet, through it all, life continues. It's a journey, a series of choices, a collection of experiences. What makes it truly worthwhile are the connections we forge, the memories we create, and the lessons we learn. So, let's embrace it, with all its ups and downs, twists and turns."
+    },
+    {
+      "type": "with_numbers_without_punctuations",
+      "content": "There are 100 ways to learn something new each day Some prefer to read others watch videos and some listen to podcasts You can set a goal of learning 3 new things daily It could be a new word a new skill or even a new perspective Learning is endless and we have 24 hours every day to make use of it If you dedicate just 30 minutes a day to learning in one year you will have gained 1825 hours of knowledge The key is consistency and curiosity"
+    },
+    {
+      "type": "with_punctuations_and_numbers",
+      "content": "In 2023, the world witnessed numerous technological advancements—some expected, others surprising. Smartphones with 5 cameras, AI that predicts weather with 99% accuracy, and electric cars with ranges over 600 miles became reality. However, with progress comes responsibility. We must ensure that technology benefits all of humanity. Are we ready for the changes ahead? Can we adapt quickly enough? These questions linger. As we move forward, balancing innovation with ethics will be key. Let's embrace the future, but with caution. After all, technology shapes our world, but our choices shape technology."
+    },
+    {
+      "type": "without_punctuations_and_numbers",
+      "content": "Every morning is a new beginning a chance to start fresh and set new goals It is a time to reflect on what matters most and to make decisions that will shape the day ahead There is no limit to what can be achieved with determination and focus Each step taken with purpose brings us closer to our dreams The journey is not always easy but it is always worth it Life is a series of choices and each choice we make writes a new chapter in our story"
+    }
+  ]
+}
