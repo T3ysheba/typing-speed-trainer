@@ -6,6 +6,12 @@
   width: 100%;
   height: 100dvh;
 
+  &__button {
+    margin: auto;
+    margin-top: 50px;
+    max-width: max-content;
+  }
+
   &__countdown {
     @extend %headline-4;
     @extend %flex-center;

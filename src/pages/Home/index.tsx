@@ -1,10 +1,11 @@
 import { type ChangeEvent, useCallback, useEffect, useMemo, useRef, useState, type FC } from 'react'
 import classNames from 'classnames'
 
+import { ReloadIcon } from 'assets'
 import { textGen } from 'store/global/actions'
 import { GlobalSelectors } from 'store/global/selectors'
 import { useAppDispatch, useAppSelector } from 'libraries/redux'
-import { FilterBar, InputTextDisplay, ResultModal } from 'components'
+import { Button, FilterBar, InputTextDisplay, ResultModal } from 'components'
 
 import styles from './Home.module.scss'
 
@@ -220,6 +221,12 @@ const Home: FC = () => {
         </p>
         <InputTextDisplay onClick={onClickStartTypingHandler} text={arrayWithLetters} typedText={typedText} />
       </div>
+
+      {isTrainingStarted && (
+        <Button onClick={onRestartButtonClick} className={styles.wrapper__button} RightIcon={ReloadIcon}>
+          Restart
+        </Button>
+      )}
 
       <ResultModal
         isOpen={isModalOpen}
