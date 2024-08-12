@@ -22,6 +22,12 @@
     border: 1px solid $lightgray;
     box-shadow: 1px 12px 24px $darkgray;
 
+    @media (max-width: 768px) {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+    }
+
     &__visible {
       opacity: 1;
     }
@@ -37,6 +43,12 @@
     transition: 0.3s opacity;
     opacity: 0;
 
+    @media (max-width: 768px) {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+    }
+
     &__active {
       opacity: 1;
     }
@@ -46,6 +58,10 @@
       margin-top: 8px;
       width: 100%;
       max-width: 75%;
+
+      @media (max-width: 768px) {
+        max-width: 90%;
+      }
     }
   }
 }
@@ -55,6 +71,13 @@
   padding: 32px;
   @extend %headline-1;
   color: $text;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+  }
 }
 
 .input {
