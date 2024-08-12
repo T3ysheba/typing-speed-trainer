@@ -1,46 +1,55 @@
-# Getting Started with Create React App
+### Typing Speed Trainer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Typing Speed Trainer is a web-based application designed to help users improve their typing speed and accuracy. The application measures your Words Per Minute (WPM) and accuracy by allowing you to type out randomly generated text within a specified time frame. 
 
-## Available Scripts
+### Technologies used
 
-In the project directory, you can run:
+React: Frontend library used for building the user interface.
 
-### `npm start`
+Redux: State management library to manage the application’s state.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+TypeScript: For type safety and better developer experience.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+SCSS: For styling components with modular and reusable styles.
 
-### `npm test`
+### Installation
+To set up the project locally, follow these steps:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1.Clone the repository
 
-### `npm run build`
+```git clone https://github.com/your-username/typing-speed-trainer.git```
+```cd typing-speed-trainer```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2.Install dependencies:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+``` npm install ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3.Run the application:
 
-### `npm run eject`
+``` npm start ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Usage
+Once the application is running:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Choose the text types (e.g., punctuations, numbers) you want to practice with.
 
-## Learn More
+Select your desired time limit.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Start typing as soon as the text appears.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Your WPM and accuracy will be displayed in real-time.
+
+After the session ends, your results will be shown in a modal.
+
+### Key Components
+Home.tsx: The main component that orchestrates the typing session.
+
+ResultModal.tsx: A modal that displays the user's WPM and accuracy after the session.
+
+TextDisplay.tsx: Renders the text to be typed with visual feedback on accuracy.
+
+Input.tsx: Custom input component for capturing user typing.
+
+
