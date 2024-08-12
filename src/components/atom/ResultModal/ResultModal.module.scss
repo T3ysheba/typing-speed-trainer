@@ -21,6 +21,12 @@
     background-color: $body-bg;
   }
 
+  &__line {
+    width: 100%;
+    height: 1px;
+    background-color: $text;
+  }
+
   &__row {
     @extend %flex-justify-between;
     gap: 8px;

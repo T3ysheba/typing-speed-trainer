@@ -4,4 +4,5 @@ export type TResultModalProps = {
   incorrectSymbols: number
   isOpen: boolean
   onClose: () => void
+  onRestartButtonClick: () => void
 }

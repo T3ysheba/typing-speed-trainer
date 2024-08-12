@@ -1,34 +1,56 @@
-import { useCallback, useEffect, useRef, useState, type FC } from 'react'
+import { type ChangeEvent, useCallback, useEffect, useMemo, useRef, useState, type FC } from 'react'
 import classNames from 'classnames'
 
-import { ResultModal } from 'components'
 import { textGen } from 'store/global/actions'
 import { GlobalSelectors } from 'store/global/selectors'
 import { useAppDispatch, useAppSelector } from 'libraries/redux'
+import { FilterBar, InputTextDisplay, ResultModal } from 'components'
 
 import styles from './Home.module.scss'
 
 const Home: FC = () => {
-  const [isTrainingStarted, setTrainingStart] = useState<boolean>(false)
-  const [isModalOpen, setModalOpen] = useState<boolean>(false)
-  const [totalTime, setTotalTime] = useState<number>(0)
+  const [totalTime, setTotalTime] = useState<number>(30)
   const [countDown, setCountDown] = useState<number>(30)
   const [typedKey, setTypedKey] = useState<string>('')
   const [typedText, setTypedText] = useState<string>('')
-  const [incorrectSymbols, setIncorrectSymbols] = useState<number>(0)
   const [textType, setTextType] = useState<string[]>([])
+  const [isModalOpen, setModalOpen] = useState<boolean>(false)
+  const [incorrectSymbols, setIncorrectSymbols] = useState<number>(0)
+  const [isTrainingStarted, setTrainingStart] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const data = useAppSelector(GlobalSelectors.getText)
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const text = 'focus on fundamentals practice regularly and stay updated'
-  const arrayWithLetters = text.split('')
+  //Filtering the text
+  const filteredText = useCallback(() => {
+    if (!data) return ''
+
+    if (textType.includes('punctuations') && !textType.includes('numbers')) {
+      return data?.[0].content.toLowerCase()
+    }
+
+    if (textType.includes('numbers') && !textType.includes('punctuations')) {
+      return data?.[1].content.toLowerCase()
+    }
+
+    if (textType.includes('numbers') && textType.includes('punctuations')) {
+      return data?.[2].content.toLowerCase()
+    }
+
+    if (textType.length === 0) {
+      return data?.[3].content.toLowerCase()
+    }
+
+    return ''
+  }, [data, textType])
+
+  const text = useMemo(() => filteredText(), [filteredText])
+  const arrayWithLetters = useMemo(() => text.split(''), [text])
 
   const startTypingHandler = useCallback((event: KeyboardEvent) => {
-    if (event.key === text[0] && document.activeElement !== inputRef.current) {
+    if ((event.key.length === 1 || event.key === 'space') && document.activeElement !== inputRef.current) {
       setTrainingStart(true)
       inputRef.current?.focus()
     }
@@ -36,38 +58,27 @@ const Home: FC = () => {
     setTypedKey(event.key)
   }, [])
 
-  const modalToggler = (state: boolean) => {
-    if (!state) {
-      clearAndReset()
-    }
-
-    setModalOpen(state)
-  }
-
-  const textToggler = (state: string) => {
-    if (textType.includes(state)) {
-      const newTextTypes = textType.filter(item => item !== state)
-
-      setTextType(newTextTypes)
-    } else {
-      setTextType(prev => [...prev, state])
-    }
-  }
-
-  const onClickStartTypingHandler = () => {
+  const onClickStartTypingHandler = useCallback(() => {
     setTrainingStart(true)
     inputRef.current?.focus()
-  }
+  }, [])
 
   const typingHandler = useCallback(
-    (event: any) => {
-      if (text[Number(typedText?.length)] !== typedKey && typedKey !== 'Backspace') {
+    (event: ChangeEvent<HTMLInputElement>) => {
+      if (
+        text[Number(typedText?.length)] !== typedKey &&
+        typedKey.length === 1 &&
+        typedKey !== 'space' &&
+        !isModalOpen
+      ) {
         setIncorrectSymbols(prev => prev + 1)
       }
 
-      setTypedText(event.target.value)
+      if (!isModalOpen) {
+        setTypedText(event.target.value)
+      }
     },
-    [typedKey, typedText?.length]
+    [isModalOpen, text, typedKey, typedText?.length]
   )
 
   const clearAndReset = useCallback(() => {
@@ -88,12 +99,52 @@ const Home: FC = () => {
     [clearAndReset]
   )
 
+  //opens modal or close
+  const modalToggler = useCallback(
+    (state: boolean) => {
+      if (!state) {
+        clearAndReset()
+        inputRef.current?.blur()
+      }
+
+      setModalOpen(state)
+    },
+    [clearAndReset]
+  )
+
+  //toggles filters in filterBar component
+  const textToggler = useCallback(
+    (state: string) => {
+      if (textType.includes(state)) {
+        clearAndReset()
+
+        const newTextTypes = textType.filter(item => item !== state)
+
+        setTextType(newTextTypes)
+      } else {
+        clearAndReset()
+
+        setTextType(prev => [...prev, state])
+      }
+    },
+
+    [clearAndReset, textType]
+  )
+
+  const onRestartButtonClick = () => {
+    modalToggler(false)
+
+    setTrainingStart(true)
+  }
+
+  // WPM and Accuracy calculator
   const getWpmAndAccuracy = useCallback(() => {
-    const totalWords = typedText.split(' ')?.length
+    const totalWords = typedText.split(' ').length || 0
 
-    const wpm = Math.round(totalWords / (totalTime / 60))
-
-    const accuracy = Math.round(((typedText?.length - incorrectSymbols) * 100) / typedText?.length)
+    const minutes = totalTime / 60
+    const wpm = minutes > 0 ? Math.round(totalWords / minutes) : 0
+    const accuracy =
+      typedText.length > 0 ? Math.round(((typedText.length - incorrectSymbols) * 100) / typedText.length) : 0
 
     return {
       wpm,
@@ -101,19 +152,9 @@ const Home: FC = () => {
     }
   }, [incorrectSymbols, totalTime, typedText])
 
-  const renderText = arrayWithLetters.map((element, index) => (
-    <span
-      key={index}
-      className={classNames(styles.letter, {
-        [styles.letter__active]: typedText[index] === element,
-        [styles.letter__error]: typedText[index] !== element && typedText.length > index,
-      })}
-    >
-      {element}
-
-      {Number(typedText.length - 1) === index && <span className={classNames(styles.wrapper__line)} />}
-    </span>
-  ))
+  useEffect(() => {
+    dispatch(textGen())
+  }, [dispatch])
 
   useEffect(() => {
     document.addEventListener('keydown', startTypingHandler)
@@ -145,10 +186,6 @@ const Home: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countDown, isTrainingStarted])
 
-  useEffect(() => {
-    dispatch(textGen())
-  }, [dispatch])
-
   return (
     <section className={styles.wrapper}>
       <input
@@ -161,71 +198,10 @@ const Home: FC = () => {
         maxLength={text.length}
       />
 
-      <header className={styles.header}>
-        <h1 className={styles.header__title}>TYPING SPEED TRAINER</h1>
-      </header>
+      <h1 className={styles.header__title}>TYPING SPEED TRAINER</h1>
 
-      <div className={styles.wrapper__filters}>
-        <p
-          role='button'
-          className={classNames(styles.wrapper__filters__text, {
-            [styles.wrapper__filters__text__active]: textType.includes('punctuations'),
-          })}
-          onClick={() => textToggler('punctuations')}
-        >
-          @ Punctuations
-        </p>
-        <p
-          role='button'
-          className={classNames(styles.wrapper__filters__text, {
-            [styles.wrapper__filters__text__active]: textType.includes('numbers'),
-          })}
-          onClick={() => textToggler('numbers')}
-        >
-          # Numbers
-        </p>
+      <FilterBar textType={textType} textToggler={textToggler} onTimeSetClick={onTimeSetClick} totalTime={totalTime} />
 
-        <p>|</p>
-
-        <p className={styles.wrapper__filters__text}>Time:</p>
-        <p
-          role='button'
-          onClick={() => onTimeSetClick(120)}
-          className={classNames(styles.wrapper__filters__text, {
-            [styles.wrapper__filters__text__active]: totalTime === 120,
-          })}
-        >
-          120
-        </p>
-        <p
-          role='button'
-          onClick={() => onTimeSetClick(60)}
-          className={classNames(styles.wrapper__filters__text, {
-            [styles.wrapper__filters__text__active]: totalTime === 60,
-          })}
-        >
-          60
-        </p>
-        <p
-          role='button'
-          onClick={() => onTimeSetClick(30)}
-          className={classNames(styles.wrapper__filters__text, {
-            [styles.wrapper__filters__text__active]: totalTime === 30,
-          })}
-        >
-          30
-        </p>
-
-        <p
-          role='button'
-          onClick={() => onTimeSetClick(10)}
-          className={classNames(styles.wrapper__filters__text, {
-            [styles.wrapper__filters__text__active]: totalTime === 10,
-          })}
-        >
-          10
-        </p>
-      </div>
       <p
         className={classNames(styles.wrapper__filters, styles.wrapper__filters__text, styles.wrapper__countdown, {
           [styles.wrapper__countdown__visible]: isTrainingStarted,
@@ -234,16 +210,24 @@ const Home: FC = () => {
         {countDown}
       </p>
 
-      <div onClick={onClickStartTypingHandler} className={styles.wrapper__text_bar}>
-        <p className={styles.wrapper__text_bar__text}>{renderText}</p>
+      <div className={styles.wrapper__tooltip__container}>
+        <p
+          className={classNames(styles.wrapper__tooltip, {
+            [styles.wrapper__tooltip__active]: !isTrainingStarted && !isModalOpen,
+          })}
+        >
+          Type to start or click on the text
+        </p>
+        <InputTextDisplay onClick={onClickStartTypingHandler} text={arrayWithLetters} typedText={typedText} />
       </div>
 
       <ResultModal
+        isOpen={isModalOpen}
         wpm={getWpmAndAccuracy().wpm}
+        onClose={() => modalToggler(false)}
         incorrectSymbols={incorrectSymbols}
         accuracy={getWpmAndAccuracy().accuracy}
-        isOpen={isModalOpen}
-        onClose={() => modalToggler(false)}
+        onRestartButtonClick={onRestartButtonClick}
       />
     </section>
   )

@@ -8,7 +8,14 @@ import { useLockBodyScroll } from 'hooks'
 import type { TResultModalProps } from './types'
 import styles from './ResultModal.module.scss'
 
-const ResultModal: FC<TResultModalProps> = ({ wpm, incorrectSymbols, accuracy, isOpen, onClose }) => {
+const ResultModal: FC<TResultModalProps> = ({
+  wpm,
+  incorrectSymbols,
+  accuracy,
+  isOpen,
+  onClose,
+  onRestartButtonClick,
+}) => {
   useLockBodyScroll(isOpen)
 
   return createPortal(
@@ -25,11 +32,15 @@ const ResultModal: FC<TResultModalProps> = ({ wpm, incorrectSymbols, accuracy, i
                 <p className={styles.wrapper__results}>{wpm}</p>
               </div>
 
+              <div className={styles.wrapper__line} />
+
               <div className={styles.wrapper__row}>
                 <p className={styles.wrapper__text}>Accuracy:</p>
 
                 <p className={styles.wrapper__results}>{accuracy}%</p>
               </div>
+
+              <div className={styles.wrapper__line} />
 
               <div className={styles.wrapper__row}>
                 <p className={styles.wrapper__text}>Total incorrect symbols:</p>
@@ -43,7 +54,7 @@ const ResultModal: FC<TResultModalProps> = ({ wpm, incorrectSymbols, accuracy, i
                 Close
               </Button>
 
-              <Button onClick={onClose} className={styles.wrapper__button} RightIcon={ReloadIcon}>
+              <Button onClick={onRestartButtonClick} className={styles.wrapper__button} RightIcon={ReloadIcon}>
                 Restart
               </Button>
             </div>

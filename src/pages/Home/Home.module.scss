@@ -1,103 +1,60 @@
 @import 'styles/typography';
 @import 'styles/colors';
-@import 'styles/fonts';
 @import 'styles/vars';
 
 .wrapper {
   width: 100%;
   height: 100dvh;
 
-  &__line {
-    width: 1px;
-    height: 25px;
-    background-color: #000;
-    position: absolute;
-    animation: typingLineAnimation 1s infinite;
-    transform-origin: center;
-  }
-
-  &__text_bar {
-    width: 100%;
-    cursor: text;
-    max-width: 75%;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 24px;
-    border-radius: 8px;
-    border: 1px solid $lightgray;
-    box-shadow: 1px 12px 24px $darkgray;
-    margin-top: 24px;
-    position: relative;
-
-    &__text {
-      @extend %body-18b;
-      font-family: $codeFontFamily;
-      user-select: none;
-    }
-  }
-
-  &__filters {
-    @extend %flex-center;
-    gap: 16px;
-    margin: 0 auto;
-    padding: 16px;
-    width: max-content;
-    border-radius: 8px;
-    margin-top: 24px;
-    background-color: #fff;
-    border: 1px solid $lightgray;
-    box-shadow: 1px 12px 24px $darkgray;
-
-    &__text {
-      @extend %headline-4;
-      cursor: pointer;
-      color: $text;
-      transition: color 0.3s;
-
-      &__active {
-        color: $secondary;
-      }
-    }
-  }
-
   &__countdown {
-    margin-top: 0;
-    min-width: 50px;
-    width: 50px;
-    max-width: 50px;
-    height: 50px;
-    border-radius: 0 0 8px 8px;
-    border-top: 0;
-    transition: 0.3s opacity;
+    @extend %headline-4;
+    @extend %flex-center;
     opacity: 0;
+    margin: 0 auto;
+    height: 50px;
+    max-width: 50px;
+    min-width: 50px;
+    border-top: 0;
+    color: $text;
+    transition: 0.3s opacity;
+    border-radius: 0 0 8px 8px;
+    background-color: #fff;
+    border: 1px solid $lightgray;
+    box-shadow: 1px 12px 24px $darkgray;
 
     &__visible {
       opacity: 1;
     }
   }
+
+  &__tooltip {
+    @extend %body-14;
+    width: max-content;
+    padding: 4px 8px;
+    color: $white;
+    background-color: $primary;
+    border-radius: 8px;
+    transition: 0.3s opacity;
+    opacity: 0;
+
+    &__active {
+      opacity: 1;
+    }
+
+    &__container {
+      margin: auto;
+      margin-top: 8px;
+      width: 100%;
+      max-width: 75%;
+    }
+  }
 }
 
-.letter {
-  opacity: 0.5;
-
-  &__active {
-    color: #000;
-    opacity: 1;
-  }
-
-  &__error {
-    color: $error;
-  }
-}
-
-.header {
+.header__title {
   width: 100%;
   padding: 32px;
-
-  &__title {
-    @extend %headline-1;
-    color: $text;
-  }
+  @extend %headline-1;
+  color: $text;
 }
 
 .input {
@@ -105,18 +62,4 @@
   height: 0;
   border: none;
   position: absolute;
-}
-
-@keyframes typingLineAnimation {
-  0% {
-    transform: scale(0);
-  }
-
-  50% {
-    transform: scale(1);
-  }
-
-  100% {
-    transform: scale(0);
-  }
 }

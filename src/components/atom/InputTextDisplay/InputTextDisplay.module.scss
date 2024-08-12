@@ -1,0 +1,58 @@
+@import 'styles/typography';
+@import 'styles/colors';
+@import 'styles/fonts';
+@import 'styles/vars';
+
+.wrapper {
+  width: 100%;
+  cursor: text;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid $lightgray;
+  box-shadow: 1px 12px 24px $darkgray;
+  position: relative;
+
+  &__text {
+    @extend %body-18b;
+    font-family: $codeFontFamily;
+    user-select: none;
+  }
+
+  &__line {
+    width: 1px;
+    height: 25px;
+    background-color: #000;
+    position: absolute;
+    animation: typingLineAnimation 1s infinite;
+    transform-origin: center;
+  }
+}
+
+.letter {
+  opacity: 0.5;
+
+  &__active {
+    color: #000;
+    opacity: 1;
+  }
+
+  &__error {
+    color: $error;
+  }
+}
+
+@keyframes typingLineAnimation {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
+  }
+}

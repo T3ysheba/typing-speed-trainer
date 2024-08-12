@@ -1,0 +1,27 @@
+@import 'styles/typography';
+@import 'styles/colors';
+@import 'styles/vars';
+
+.wrapper {
+  @extend %flex-center;
+  gap: 16px;
+  margin: 0 auto;
+  padding: 16px;
+  width: max-content;
+  border-radius: 8px;
+  margin-top: 24px;
+  background-color: #fff;
+  border: 1px solid $lightgray;
+  box-shadow: 1px 12px 24px $darkgray;
+
+  &__text {
+    @extend %headline-4;
+    cursor: pointer;
+    color: $text;
+    transition: color 0.3s;
+
+    &__active {
+      color: $secondary;
+    }
+  }
+}

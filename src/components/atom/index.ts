@@ -1,5 +1,5 @@
 export { default as Button } from './Button'
 export { default as Loader } from './Loader'
-export { default as Tooltip } from './Tooltip'
+export { default as FilterBar } from './FilterBar'
 export { default as ResultModal } from './ResultModal'
-export { default as PrivateRoute } from './PrivateRoute'
+export { default as InputTextDisplay } from './InputTextDisplay'
